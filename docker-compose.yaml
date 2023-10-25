@@ -37,10 +37,10 @@ services:
     image: mysql
     restart: always
     environment:
-      - MYSQL_PASSWORD=4k9nk28v
-      - MYSQL_DATABASE=generic
-      - MYSQL_USER=sawaii
-      - MYSQL_ROOT_PASSWORD=4lenslona
+      - MYSQL_PASSWORD=tT7jN0oX0f
+      - MYSQL_DATABASE=art-search
+      - MYSQL_USER=manticore
+      - MYSQL_ROOT_PASSWORD=tT7jN0oX0f111
     # volumes:
     #   # - 'database:/var/lib/mysql/data'
 
