@@ -900,11 +900,11 @@
                         @isset($catalog)
                             @foreach ($catalog as $item)
                                 <tr>
-                                    <td>{{ $item->ID }}</td>
+                                    <td class="item_id">{{ $item->ID }}</td>
 
-                                    <td>{{ $item->Name }}</td>
+                                    <td class="item_name">{{ $item->Name }}</td>
 
-                                    <td>{{ $item->razdel->Name  }}</td>
+                                    <td class="item_category">{{ $item->razdel->Name  }}</td>
                                 </tr>
                             @endforeach
                         @endisset
