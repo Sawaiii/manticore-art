@@ -904,7 +904,7 @@
 
                                     <td>{{ $item->Name }}</td>
 
-                                    <td>{{ $item->Razdel->Name  }}</td>
+                                    <td>{{ $item->razdel->Name  }}</td>
                                 </tr>
                             @endforeach
                         @endisset
