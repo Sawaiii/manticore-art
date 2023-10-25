@@ -10,6 +10,6 @@ class Razdel extends Model
     use HasFactory;
 
 
-    protected $table = 'prt_catalog_attribute';
+    protected $table = 'prt_catalog_raz';
 
 }
