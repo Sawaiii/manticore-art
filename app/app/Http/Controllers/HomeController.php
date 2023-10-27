@@ -29,13 +29,21 @@ class HomeController extends Controller
 
         $catalogItems = Catalog::whereIn("id", $ids)->get();
 
-       
-        $catalogItems = $catalogItems->sortBy(function ($item) use ($request) {
-            $firstWord = strtok($item-> 'Name '); 
-            return starts_with($firstWord, $request->text) ? 1 : 2;
+        // Сортировка на основе соответствия первому слову
+        $catalogItems = $catalogItems->sort(function ($a, $b) use ($request) {
+            $aFirstWord = strtok($a->'Name'); // Замените 'your_text_column' на имя столбца, содержащего текст
+            $bFirstWord = strtok($b->'Name');
+
+            if (starts_with($aFirstWord, $request->text) && !starts_with($bFirstWord, $request->text)) {
+                return -1;
+            } elseif (!starts_with($aFirstWord, $request->text) && starts_with($bFirstWord, $request->text)) {
+                return 1;
+            }
+
+            return 0;
         })->values();
     }
 
-   return view('welcome',  [ "catalog" => $catalogItems] );
+    return view('welcome',  [ "catalog" => $catalogItems] );
 }
 }
