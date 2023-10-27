@@ -29,14 +29,17 @@ class HomeController extends Controller
 
         $catalogItems = Catalog::whereIn("id", $ids)->get();
 
-        // Сортировка на основе соответствия первому слову
+      
         $catalogItems = $catalogItems->sort(function ($a, $b) use ($request) {
-            $aFirstWord = strtok($a->Name, ' '); // Замените 'your_text_column' на имя столбца, содержащего текст
+            $aFirstWord = strtok($a->Name, ' '); 
             $bFirstWord = strtok($b->Name, ' ');
 
-            if (strpos($aFirstWord, $request->text) === 0 && strpos($bFirstWord, $request->text) !== 0) {
+            $aFirstWordMatch = strpos($aFirstWord, $request->text) === 0;
+            $bFirstWordMatch = strpos($bFirstWord, $request->text) === 0;
+
+            if ($aFirstWordMatch && !$bFirstWordMatch) {
                 return -1;
-            } elseif (strpos($aFirstWord, $request->text) !== 0 && strpos($bFirstWord, $request->text) === 0) {
+            } elseif (!$aFirstWordMatch && $bFirstWordMatch) {
                 return 1;
             }
 
