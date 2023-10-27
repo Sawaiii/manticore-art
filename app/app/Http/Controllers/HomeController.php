@@ -31,8 +31,8 @@ class HomeController extends Controller
 
         // Сортировка на основе соответствия первому слову
         $catalogItems = $catalogItems->sort(function ($a, $b) use ($request) {
-            $aFirstWord = strtok($a->'Name'); // Замените 'your_text_column' на имя столбца, содержащего текст
-            $bFirstWord = strtok($b->'Name');
+            $aFirstWord = strtok($a->Name, ' '); // Замените 'your_text_column' на имя столбца, содержащего текст
+            $bFirstWord = strtok($b->Name, ' ');
 
             if (starts_with($aFirstWord, $request->text) && !starts_with($bFirstWord, $request->text)) {
                 return -1;
@@ -41,7 +41,7 @@ class HomeController extends Controller
             }
 
             return 0;
-        })->values();
+        })->values()->all();
     }
 
     return view('welcome',  [ "catalog" => $catalogItems] );
