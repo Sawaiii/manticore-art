@@ -34,9 +34,9 @@ class HomeController extends Controller
             $aFirstWord = strtok($a->Name, ' '); // Замените 'your_text_column' на имя столбца, содержащего текст
             $bFirstWord = strtok($b->Name, ' ');
 
-            if (starts_with($aFirstWord, $request->text) && !starts_with($bFirstWord, $request->text)) {
+            if (strpos($aFirstWord, $request->text) === 0 && strpos($bFirstWord, $request->text) !== 0) {
                 return -1;
-            } elseif (!starts_with($aFirstWord, $request->text) && starts_with($bFirstWord, $request->text)) {
+            } elseif (strpos($aFirstWord, $request->text) !== 0 && strpos($bFirstWord, $request->text) === 0) {
                 return 1;
             }
 
