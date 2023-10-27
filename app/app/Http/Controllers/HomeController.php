@@ -12,29 +12,30 @@ class HomeController extends Controller
 
 
     public function index(Request $request)
-    {
-        $catalogItems = [];
-        if (!empty($request->text)
-        ) {
-            $config = ['host' => 'manticore', 'port' => 9308];
-            $client = new Client($config);
-            $index = $client->index('prt_catalog');
+{
+    $catalogItems = [];
 
-            $searchData =  $index->search("@(first_word {$request->text} | *{$request->text}*)")->limit(100)->orderBy("first_word")->get();
+    if (!empty($request->text)) {
+        $config = ['host' => 'manticore', 'port' => 9308];
+        $client = new Client($config);
+        $index = $client->index('prt_catalog');
 
-            $ids = [];
+        $searchData = $index->search($request->text)->limit(100)->get();
+        $ids = [];
 
-            foreach ($searchData as $searchDataItem) {
-                $ids[] = $searchDataItem->getId();
-            }
-
-            
-        $catalogItems = Catalog::whereIn("id" , $ids)->get();
-
-
-        // dd($catalogItems);
+        foreach ($searchData as $searchDataItem) {
+            $ids[] = $searchDataItem->getId();
         }
-        // return response()->json(["catalog" => $catalogItems] , 200);
-        return view('welcome',  [ "catalog" => $catalogItems] );
+
+        $catalogItems = Catalog::whereIn("id", $ids)->get();
+
+       
+        $catalogItems = $catalogItems->sortBy(function ($item) use ($request) {
+            $firstWord = strtok($item-> 'Name '); 
+            return starts_with($firstWord, $request->text) ? 1 : 2;
+        })->values();
     }
+
+   return view('welcome',  [ "catalog" => $catalogItems] );
+}
 }
