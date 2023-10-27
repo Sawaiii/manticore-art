@@ -12,41 +12,29 @@ class HomeController extends Controller
 
 
     public function index(Request $request)
-{
-    $catalogItems = [];
+    {
+        $catalogItems = [];
+        if (!empty($request->text)
+        ) {
+            $config = ['host' => 'manticore', 'port' => 9308];
+            $client = new Client($config);
+            $index = $client->index('prt_catalog');
 
-    if (!empty($request->text)) {
-        $config = ['host' => 'manticore', 'port' => 9308];
-        $client = new Client($config);
-        $index = $client->index('prt_catalog');
+            $searchData =  $index->search($request->text)->limit(100)->get();
 
-        $searchData = $index->search($request->text)->limit(100)->get();
-        $ids = [];
+            $ids = [];
 
-        foreach ($searchData as $searchDataItem) {
-            $ids[] = $searchDataItem->getId();
-        }
-
-        $catalogItems = Catalog::whereIn("id", $ids)->get();
-
-      
-        $catalogItems = $catalogItems->sort(function ($a, $b) use ($request) {
-            $aFirstWord = strtok($a->Name, ' '); 
-            $bFirstWord = strtok($b->Name, ' ');
-
-            $aFirstWordMatch = strpos($aFirstWord, $request->text) === 0;
-            $bFirstWordMatch = strpos($bFirstWord, $request->text) === 0;
-
-            if ($aFirstWordMatch && !$bFirstWordMatch) {
-                return -1;
-            } elseif (!$aFirstWordMatch && $bFirstWordMatch) {
-                return 1;
+            foreach ($searchData as $searchDataItem) {
+                $ids[] = $searchDataItem->getId();
             }
 
-            return 0;
-        })->values()->all();
-    }
+            
+        $catalogItems = Catalog::whereIn("id" , $ids)->get();
 
-    return view('welcome',  [ "catalog" => $catalogItems] );
-}
+
+        // dd($catalogItems);
+        }
+        // return response()->json(["catalog" => $catalogItems] , 200);
+        return view('welcome',  [ "catalog" => $catalogItems] );
+    }
 }
