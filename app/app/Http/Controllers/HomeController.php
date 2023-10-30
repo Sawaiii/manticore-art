@@ -20,7 +20,7 @@ class HomeController extends Controller
             $client = new Client($config);
             $index = $client->index('prt_catalog');
 
-            $searchData =  $index->search($request->text)->sort('Name','asc','max')->limit(100)->get();
+            $searchData =  $index->search($request->text)->sort('Name','asc','min')->limit(100)->get();
 
             $ids = [];
 
