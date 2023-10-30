@@ -28,7 +28,8 @@ class HomeController extends Controller
                 $ids[] = $searchDataItem->getId();
             }
             foreach ($datum as $key => $searchDataItem) {
-                newmass[$key] = $searchDataItem->getId();
+                
+                $newmass[$key] = $searchDataItem->getId();
             }
             
             
