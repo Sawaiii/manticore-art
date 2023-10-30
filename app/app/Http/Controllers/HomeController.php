@@ -27,14 +27,8 @@ class HomeController extends Controller
             foreach ($searchData as $searchDataItem) {
                 $ids[] = $searchDataItem->getId();
             }
-
-            
         $catalogItems = Catalog::whereIn("id" , $ids)->get();
-
-
-        // dd($catalogItems);
         }
-        // return response()->json(["catalog" => $catalogItems] , 200);
         return view('welcome',  [ "catalog" => $catalogItems] );
     }
 }
