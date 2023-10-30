@@ -897,8 +897,8 @@
                     </thead>
                     <tbody>
 
-                        @isset($catalog)
-                            @foreach ($catalog as $item)
+                        @isset($bimbam)
+                            @foreach ($bimbam as $item)
                                 <tr>
                                     <td class="item_id">{{ $item->ID }}</td>
 
