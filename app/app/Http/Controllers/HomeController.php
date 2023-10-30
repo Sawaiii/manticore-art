@@ -24,11 +24,19 @@ class HomeController extends Controller
 
             $ids = [];
 
-            foreach ($searchData as $searchDataItem) {
+            $poryadok = [];
+            
+            foreach ($searchData as $key =>  $searchDataItem) {
                 $ids[] = $searchDataItem->getId();
+                $poryadok[$searchDataItem->getId()] =  $key;
             }
-        $catalogItems = Catalog::whereIn("id" , $ids)->get();
-        }
+
+            $catalogItems = Catalog::whereIn("id" , $ids)->get();
+
+            $bimbam = [];
+            foreach ($catalogItems as $item) {
+                $bimbam[$poryadok[$item->id]] = $item;
+            }
         return view('welcome',  [ "catalog" => $catalogItems] );
     }
 }
