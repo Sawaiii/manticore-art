@@ -20,23 +20,15 @@ class HomeController extends Controller
             $client = new Client($config);
             $index = $client->index('prt_catalog');
 
-            $searchData =  $index->search($request->text)->limit(100)->get();
+            $searchData = $index->search($request->text)->limit(100)->get();
 
             $ids = [];
 
-            $poryadok = [];
-            
-            foreach ($searchData as $key =>  $searchDataItem) {
+            foreach ($searchData as $searchDataItem) {
                 $ids[] = $searchDataItem->getId();
-                $poryadok[$searchDataItem->getId()] =  $key;
             }
-
-            $catalogItems = Catalog::whereIn("id" , $ids)->get();
-
-            $bimbam = [];
-            foreach ($catalogItems as $item) {
-                $bimbam[$poryadok[$item->id]] = $item;
-            }
-        return view('welcome',  [ "catalog" => $catalogItems] );
-    }
+        $catalogItems = Catalog::whereIn("id" , $ids)->get();
+        }
+        return view('welcome', [ "catalog" => $catalogItems] );
+}
 }
