@@ -12,32 +12,38 @@ class HomeController extends Controller
 
 
     public function index(Request $request)
-    {
-        $catalogItems = [];
-        if (!empty($request->text)
-        ) {
-            $config = ['host' => 'manticore', 'port' => 9308];
-            $client = new Client($config);
-            $index = $client->index('prt_catalog');
+{
+    $catalogItems = [];
 
-            $searchData =  $index->search($request->text)->sort('Name', 'desc')->sort('ID','desc')->limit(100)->get();
+    if (!empty($request->text)) {
+        $config = ['host' => 'manticore', 'port' => 9308];
+        $client = new Client($config);
+        $index = $client->index('prt_catalog');
 
-            $ids = [];
-            $poryadok = [];
-            
-            foreach ($searchData as $key =>  $searchDataItem) {
-                $ids[] = $searchDataItem->getId();
-                $poryadok[$searchDataItem->getId()] =  $key;
+        $searchData = $index->search($request->text)->limit(100)->get();
+        $ids = [];
+
+        foreach ($searchData as $searchDataItem) {
+            $ids[] = $searchDataItem->getId();
+        }
+
+        $catalogItems = Catalog::whereIn("id", $ids)->get();
+
+        // Сортировка на основе соответствия первому слову
+        $catalogItems = $catalogItems->sort(function ($a, $b) use ($request) {
+            $aFirstWord = strtok($a->Name, ' '); // Замените 'your_text_column' на имя столбца, содержащего текст
+            $bFirstWord = strtok($b->Name, ' ');
+
+            if (strpos($aFirstWord, $request->text) === 0 && strpos($bFirstWord, $request->text) !== 0) {
+                return -1;
+            } elseif (strpos($aFirstWord, $request->text) !== 0 && strpos($bFirstWord, $request->text) === 0) {
+                return 1;
             }
 
-            $catalogItems = Catalog::whereIn("id" , $ids)->get();
-
-            $bimbam = [];
-            foreach ($catalogItems as $item) {
-                $bimbam[$poryadok[$item->id]] = $item;
-            }
-
-        return view('welcome',  [ "catalog" => $bimbam ] );
+            return 0;
+        })->values()->all();
     }
+
+    return view('welcome',  [ "catalog" => $catalogItems] );
 }
 }
