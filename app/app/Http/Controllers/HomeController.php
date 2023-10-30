@@ -23,22 +23,20 @@ class HomeController extends Controller
             $searchData =  $index->search($request->text)->sort('Name', 'desc')->sort('ID','desc')->limit(100)->get();
 
             $ids = [];
-
-            foreach ($searchData as $searchDataItem) {
+            $poryadok = [];
+            
+            foreach ($searchData as $key =>  $searchDataItem) {
                 $ids[] = $searchDataItem->getId();
+                $poryadok[$searchDataItem->getId()] =  $key;
             }
-            foreach ($datum as $key => $searchDataItem) {
-                
-                $newmass[$key] = $searchDataItem->getId();
+
+            $catalogItems = Catalog::whereIn("id" , $ids)->get();
+
+            $bimbam = [];
+            foreach ($catalogItems as $item) {
+                $bimbam[$poryadok[$item->id]] = $item;
             }
-            
-            
-        $catalogItems = Catalog::whereIn("id" , $ids)->get();
 
-
-        // dd($catalogItems);
-        }
-        // return response()->json(["catalog" => $catalogItems] , 200);
-        return view('welcome',  [ "catalog" => $catalogItems] );
+        return view('welcome',  [ "catalog" => $bimbam ] );
     }
 }
