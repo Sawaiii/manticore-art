@@ -27,7 +27,9 @@ class HomeController extends Controller
             foreach ($searchData as $searchDataItem) {
                 $ids[] = $searchDataItem->getId();
             }
-
+            foreach ($datum as $key as $data) {
+                
+            }
             
         $catalogItems = Catalog::whereIn("id" , $ids)->get();
 
