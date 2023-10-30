@@ -34,7 +34,7 @@ class HomeController extends Controller
 
             $bimbam = [];
             foreach ($catalogItems as $item) {
-                $bimbam[$poryadok[$item->ID]] = $item;
+                $bimbam[$poryadok[$item->$id]] = $item;
             }
 
         return view('welcome',  [ "catalog" => $bimbam ] );
