@@ -16,7 +16,7 @@ class HomeController extends Controller
         ) {
             $config = ['host' => 'manticore', 'port' => 9308];
             $client = new Client($config);
-            $index=$client->index('prt_catalog');
+            $index = $client->index('prt_catalog');
 
             $searchData = $index->search($request->text)->limit(100)->get();
 
