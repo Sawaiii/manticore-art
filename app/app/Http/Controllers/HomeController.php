@@ -9,8 +9,6 @@ use Manticoresearch\Client;
 
 class HomeController extends Controller
 {
-
-    
     public function index(Request $request)
     {
         $catalogItems = [];
