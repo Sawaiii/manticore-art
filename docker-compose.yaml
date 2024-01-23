@@ -41,8 +41,6 @@ services:
       - MYSQL_DATABASE=art-search
       - MYSQL_USER=manticore
       - MYSQL_ROOT_PASSWORD=tT7jN0oX0f111
-    # volumes:
-    #   # - 'database:/var/lib/mysql/data'
 
   manticore:
     image: manticoresearch/manticore
