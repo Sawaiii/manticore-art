@@ -64,6 +64,3 @@ services:
       - PMA_ARBITRARY=1
       - UPLOAD_LIMIT=100096K
 
-volumes:
-  app:
-  database:
