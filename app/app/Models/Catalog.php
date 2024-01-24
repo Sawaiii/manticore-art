@@ -16,6 +16,6 @@ class Catalog extends Model
 
     public function razdel():BelongsTo
     {
-        return $this->belongsTo(Razdel::class , 'Razdel', 'ID');
+        return $this->belongsTo(Razdel::class , 'Razdel');
     }
 }
